@@ -84,9 +84,9 @@ appdata/traefik3/*
 !appdata/traefik3/rules
 appdata/traefik3/rules/*
 !appdata/traefik3/rules/*.example
-!appdata/traefik3/rules/ws-arm
-appdata/traefik3/rules/ws-arm/*
-!appdata/traefik3/rules/ws-arm/*.example
+!appdata/traefik3/rules/gpu-server
+appdata/traefik3/rules/gpu-server/*
+!appdata/traefik3/rules/gpu-server/*.example
 !appdata/traefik3/rules/toml
 appdata/traefik3/rules/toml/*
 !appdata/traefik3/rules/toml/*.example
@@ -102,12 +102,12 @@ appdata/traefik3/rules/hs/*
 !appdata/traefik3/rules/hs/tls-opts.yml
 !appdata/traefik3/rules/hs/middlewares-*.yml
 !appdata/traefik3/rules/hs/chain-*.yml
-!appdata/traefik3/rules/ws-arm
-appdata/traefik3/rules/ws-arm/*
-!appdata/traefik3/rules/ws-arm/*.example
-!appdata/traefik3/rules/ws-arm/tls-opts.yml
-!appdata/traefik3/rules/ws-arm/middlewares-*.yml
-!appdata/traefik3/rules/ws-arm/chain-*.yml
+!appdata/traefik3/rules/gpu-server
+appdata/traefik3/rules/gpu-server/*
+!appdata/traefik3/rules/gpu-server/*.example
+!appdata/traefik3/rules/gpu-server/tls-opts.yml
+!appdata/traefik3/rules/gpu-server/middlewares-*.yml
+!appdata/traefik3/rules/gpu-server/chain-*.yml
 
 !appdata/traefik2
 appdata/traefik2/*
