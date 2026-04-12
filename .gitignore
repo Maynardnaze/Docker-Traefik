@@ -6,6 +6,7 @@
 !LICENSE
 !.env.example
 
+!docker-compose-gpu-server.yml
 !docker-compose-hs.yml
 !docker-compose-mds.yml
 !docker-compose-ds918.yml

@@ -1,0 +1,56 @@
+########################### NETWORKS
+networks:
+  default:
+    driver: bridge
+  socket_proxy:
+    name: socket_proxy
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 192.168.91.0/24
+  t3_proxy:
+    name: t3_proxy
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 192.168.90.0/24
+
+########################### SECRETS
+secrets:
+  basic_auth_credentials:
+    file: $DOCKERDIR/secrets/basic_auth_credentials
+  cf_dns_api_token:
+    file: $DOCKERDIR/secrets/cf_dns_api_token
+  google_client_id:
+    file: $DOCKERDIR/secrets/google_client_id
+  google_client_secret:
+    file: $DOCKERDIR/secrets/google_client_secret
+  oauth_secret:
+    file: $DOCKERDIR/secrets/oauth_secret
+  authelia_jwt_secret:
+    file: $DOCKERDIR/secrets/authelia_jwt_secret
+  authelia_session_secret:
+    file: $DOCKERDIR/secrets/authelia_session_secret
+  authelia_storage_encryption_key:
+    file: $DOCKERDIR/secrets/authelia_storage_encryption_key
+########################### SERVICES
+include:
+  - compose/$HOSTNAME/socket-proxy.yml
+  - compose/$HOSTNAME/mosquitto.yml
+  - compose/$HOSTNAME/ha.yml
+  - compose/$HOSTNAME/traefik.yml
+  - compose/$HOSTNAME/authelia.yml
+  - compose/$HOSTNAME/gluetun.yml
+  - compose/$HOSTNAME/qbittorrent-vpn.yml
+  - compose/$HOSTNAME/sabnzbd.yml
+  - compose/$HOSTNAME/sonarr.yml
+  - compose/$HOSTNAME/radarr.yml
+  - compose/$HOSTNAME/prowlarr.yml
+  - compose/$HOSTNAME/notifiarr.yml
+  - compose/$HOSTNAME/dozzle.yml
+  - compose/$HOSTNAME/uptime-kuma.yml
+  - compose/$HOSTNAME/deunhealth.yml
+  - compose/$HOSTNAME/vscode.yml
+  - compose/$HOSTNAME/jellyfin.yml
+  - compose/$HOSTNAME/frigate.yml
+  - compose/$HOSTNAME/note-companion.yml
