@@ -1,0 +1,28 @@
+services:
+  homeassistant:
+    image: ghcr.io/home-assistant/home-assistant:stable
+    container_name: homeassistant
+    restart: unless-stopped
+    profiles: ["core", "all"]
+    privileged: true                   # Required for USB device access
+    volumes:
+      - $DOCKERDIR/appdata/homeassistant:/config
+      - /run/dbus:/run/dbus:ro         # For Bluetooth (optional but recommended)
+    devices:
+      - /dev/serial/by-id/usb-Itead_Sonoff_Zigbee_3.0_USB_Dongle_Plus_V2_68dc24fea3f3ef119415bb1b6d9880ab-if00-port0:/dev/ttyUSB0
+    environment:
+      - TZ=$TZ
+    networks:
+      - t3_proxy
+    labels:
+      - "traefik.enable=true"
+      ## Router
+      - "traefik.http.routers.homeassistant-rtr.entrypoints=websecure-internal"
+      - "traefik.http.routers.homeassistant-rtr.rule=Host(`ha.$DOMAINNAME_1`)"
+      - "traefik.http.routers.homeassistant-rtr.tls=true"
+      - "traefik.http.routers.homeassistant-rtr.tls.certresolver=dns-cloudflare"  # or your resolver name
+      ## Service — HA listens on 8123
+      - "traefik.http.routers.homeassistant-rtr.service=homeassistant-svc"
+      - "traefik.http.services.homeassistant-svc.loadbalancer.server.port=8123"
+      ## Middlewares — adjust to match your middleware chain name
+      - "traefik.http.routers.homeassistant-rtr.middlewares=chain-no-auth@file"

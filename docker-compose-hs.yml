@@ -1,0 +1,66 @@
+########################### NETWORKS
+# You may customize the network subnets (192.168.x.0/24) below as you please.
+networks:
+  default:
+    driver: bridge
+  socket_proxy:
+    name: socket_proxy
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 192.168.91.0/24
+  t3_proxy:
+    name: t3_proxy
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 192.168.90.0/24
+  # NETWORKS-PLACEHOLDER-DO-NOT-DELETE
+  
+########################### SECRETS
+secrets:
+  basic_auth_credentials:
+    file: $DOCKERDIR/secrets/basic_auth_credentials
+  cf_dns_api_token:
+    file: $DOCKERDIR/secrets/cf_dns_api_token
+  oauth_secrets:
+    file: $DOCKERDIR/secrets/oauth_secrets
+  # SECRETS-PLACEHOLDER-DO-NOT-DELETE
+    
+include:
+  ########################### SERVICES
+  # HOSTNAME defined in .env file
+
+  # - compose/$HOSTNAME/custom.yml
+  - compose/$HOSTNAME/socket-proxy.yml
+  - compose/$HOSTNAME/deployrr-dashboard.yml
+  - compose/$HOSTNAME/traefik.yml
+  - compose/$HOSTNAME/oauth.yml
+  - compose/$HOSTNAME/adminer.yml
+  - compose/$HOSTNAME/bazarr.yml
+  - compose/$HOSTNAME/cloud-commander.yml
+  - compose/$HOSTNAME/cleanuparr.yml
+  - compose/$HOSTNAME/docker-gc.yml
+  - compose/$HOSTNAME/dozzle.yml
+  - compose/$HOSTNAME/glances.yml
+  - compose/$HOSTNAME/gluetun.yml
+  - compose/$HOSTNAME/it-tools.yml
+  - compose/$HOSTNAME/kometa.yml
+  - compose/$HOSTNAME/lidarr.yml
+  - compose/$HOSTNAME/maintainerr.yml
+  - compose/$HOSTNAME/notifiarr.yml
+  - compose/$HOSTNAME/prowlarr.yml
+  - compose/$HOSTNAME/deunhealth.yml
+  - compose/$HOSTNAME/qbittorrent-vpn.yml
+  - compose/$HOSTNAME/radarr.yml
+  - compose/$HOSTNAME/sabnzbd.yml
+  - compose/$HOSTNAME/sonarr.yml
+  - compose/$HOSTNAME/stirling-pdf.yml
+  - compose/$HOSTNAME/uptime-kuma.yml
+  - compose/$HOSTNAME/wud.yml
+  - compose/$HOSTNAME/picard.yml
+  - compose/$HOSTNAME/makemkv.yml
+  - compose/$HOSTNAME/mkvtoolnix.yml
+  - compose/$HOSTNAME/firefly.yml
+  - compose/$HOSTNAME/firefly-importer.yml
+  # SERVICE-PLACEHOLDER-DO-NOT-DELETE

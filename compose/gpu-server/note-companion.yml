@@ -1,0 +1,21 @@
+services:
+  note-companion:
+    build:
+      context: ./note-companion/source
+      dockerfile: Dockerfile
+    container_name: note-companion
+    profiles: ["core", "all"]
+    restart: unless-stopped
+    env_file:
+      - note-companion/stack.env
+    volumes:
+      - $DOCKERDIR/appdata/note-companion:/app/packages/web/data
+    networks:
+      - t3_proxy
+#    labels:
+#      - "traefik.enable=true"
+#      - "traefik.http.routers.note-companion.entrypoints=https"
+#      - "traefik.http.routers.note-companion.rule=Host(`notes.$DOMAINNAME_1`)"
+#      - "traefik.http.routers.note-companion.tls=true"
+#      - "traefik.http.routers.note-companion.tls.certresolver=cloudflare"
+#      - "traefik.http.services.note-companion.loadbalancer.server.port=3000"

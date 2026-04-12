@@ -1,0 +1,20 @@
+services:
+  # ============================================================
+  # MOSQUITTO - MQTT Broker
+  # ============================================================
+  mosquitto:
+    image: eclipse-mosquitto:latest
+    container_name: mosquitto
+    restart: unless-stopped
+    profiles: ["core", "all"]
+    volumes:
+      - $DOCKERDIR/appdata/mosquitto/config:/mosquitto/config
+      - $DOCKERDIR/appdata/mosquitto/data:/mosquitto/data
+      - $DOCKERDIR/appdata/mosquitto/log:/mosquitto/log
+    ports:
+      - "1883:1883"     # MQTT - needs to be reachable by Tasmota devices on LAN
+      # - "8883:8883"   # MQTTS (TLS) - optional, enable later if needed
+    networks:
+      - t3_proxy
+    environment:
+      - TZ=$TZ

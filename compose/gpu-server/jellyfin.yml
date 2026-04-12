@@ -1,0 +1,37 @@
+services:
+  # Jellyfin - Media Server
+  jellyfin:
+    image: lscr.io/linuxserver/jellyfin:latest
+    container_name: jellyfin
+    security_opt:
+      - no-new-privileges:true
+    restart: unless-stopped
+    profiles: ["media", "all"]
+    networks:
+      - t3_proxy
+    ports:
+      - "$JELLYFIN_PORT:8096"
+    volumes:
+      - $DOCKERDIR/appdata/jellyfin:/config
+      - $MEDIADIR1/movies:/data/movies
+      - $MEDIADIR1/tv:/data/tv
+    environment:
+      TZ: $TZ
+      PUID: $PUID
+      PGID: $PGID
+      JELLYFIN_PublishedServerUrl: https://jellyfin.$DOMAINNAME_1
+    runtime: nvidia
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities: [gpu]
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.jellyfin-rtr.entrypoints=websecure-internal,websecure-external"
+      - "traefik.http.routers.jellyfin-rtr.rule=Host(`jellyfin.$DOMAINNAME_1`)"
+      - "traefik.http.routers.jellyfin-rtr.middlewares=chain-no-auth@file"
+      - "traefik.http.routers.jellyfin-rtr.service=jellyfin-svc"
+      - "traefik.http.services.jellyfin-svc.loadbalancer.server.port=8096"

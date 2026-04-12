@@ -1,0 +1,46 @@
+services:
+  # Frigate - NVR with AI Detection
+  frigate:
+    image: ghcr.io/blakeblackshear/frigate:stable
+    container_name: frigate
+    security_opt:
+      - no-new-privileges:true
+      - apparmor=unconfined
+    restart: unless-stopped
+    profiles: ["media", "all"]
+    networks:
+      - t3_proxy
+    ports:
+      - "$FRIGATE_PORT:5000"
+      - "8554:8554" # RTSP feeds
+      - "8555:8555/tcp" # WebRTC
+      - "8555:8555/udp" # WebRTC
+    volumes:
+      - $DOCKERDIR/appdata/frigate:/config
+      - /mnt/frigate:/media/frigate
+      - type: tmpfs
+        target: /tmp/cache
+        tmpfs:
+          size: 1000000000 # 1GB tmpfs for processing
+    devices:
+      - /dev/apex_0:/dev/apex_0
+      - /dev/dri/renderD128:/dev/dri/renderD128
+    environment:
+      TZ: $TZ
+      FRIGATE_RTSP_PASSWORD: $FRIGATE_RTSP_PASSWORD
+    runtime: nvidia
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities: [gpu]
+    shm_size: "256mb"
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.frigate-rtr.entrypoints=websecure-internal"
+      - "traefik.http.routers.frigate-rtr.rule=Host(`frigate.$DOMAINNAME_1`)"
+      - "traefik.http.routers.frigate-rtr.middlewares=chain-authelia@file"
+      - "traefik.http.routers.frigate-rtr.service=frigate-svc"
+      - "traefik.http.services.frigate-svc.loadbalancer.server.port=5000"
