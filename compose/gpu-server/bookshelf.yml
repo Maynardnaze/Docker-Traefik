@@ -1,0 +1,29 @@
+services:
+  # BookShelf - Books Management
+  bookshelf:
+    image: ghcr.io/pennydreadful/bookshelf:hardcover
+    container_name: bookshelf
+    security_opt:
+      - no-new-privileges:true
+    restart: unless-stopped
+    profiles: ["media", "arr", "all"]  # ⚠️ See note below
+    networks:
+      - t3_proxy
+    #ports:
+    #  - "$BOOKSHELF:8787"
+    volumes:
+      - $DOCKERDIR/appdata/bookshelf:/config
+      - $MEDIADIR1:/mnt/media
+       # See note below — books/media path needs your env var
+      - "/etc/localtime:/etc/localtime:ro"
+    environment:
+      TZ: $TZ
+      PUID: $PUID
+      PGID: $PGID
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.bookshelf-rtr.entrypoints=websecure-internal"
+      - "traefik.http.routers.bookshelf-rtr.rule=Host(`bookshelf.$DOMAINNAME_1`)"
+      - "traefik.http.routers.bookshelf-rtr.middlewares=chain-authelia@file"
+      - "traefik.http.routers.bookshelf-rtr.service=bookshelf-svc"
+      - "traefik.http.services.bookshelf-svc.loadbalancer.server.port=8787"

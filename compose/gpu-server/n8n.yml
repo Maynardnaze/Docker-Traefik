@@ -1,0 +1,42 @@
+services:
+  n8n:
+    image: docker.n8n.io/n8nio/n8n:latest
+    container_name: n8n
+    security_opt:
+      - no-new-privileges:true
+    profiles: ["core", "all"]
+    restart: unless-stopped
+    networks:
+      - t3_proxy
+    ports:
+      - "$N8N_PORT:5678"
+    environment:
+      - N8N_HOST=n8n.$DOMAINNAME_1
+      - N8N_EDITOR_BASE_URL=https://n8n.$DOMAINNAME_1
+      - WEBHOOK_URL=https://n8n.$DOMAINNAME_1
+      - N8N_PORT=5678
+      - N8N_PROTOCOL=http
+      - NODE_ENV=production
+      - N8N_SECURE_COOKIE=false
+      - N8N_ENFORCE_SETTINGS_FILE_PERMISSIONS=true
+      - N8N_PROXY_HOPS=1
+      - GENERIC_TIMEZONE=$TZ
+      - TZ=$TZ
+    volumes:
+      - $DOCKERDIR/appdata/n8n:/home/node/.n8n
+    labels:
+      - "traefik.enable=true"
+      # Webhook router — no auth
+      - "traefik.http.routers.n8n-webhook.rule=Host(`n8n.$DOMAINNAME_1`) && (PathPrefix(`/webhook-test`) || PathPrefix(`/webhook`))"
+      - "traefik.http.routers.n8n-webhook.entrypoints=websecure-internal"
+      - "traefik.http.routers.n8n-webhook.priority=20"
+      - "traefik.http.routers.n8n-webhook.service=n8n-svc"
+
+      # UI router — behind Authelia
+      - "traefik.http.routers.n8n-ui.rule=Host(`n8n.$DOMAINNAME_1`)"
+      - "traefik.http.routers.n8n-ui.entrypoints=websecure-internal"
+      - "traefik.http.routers.n8n-ui.priority=10"
+      - "traefik.http.routers.n8n-ui.service=n8n-svc"
+      - "traefik.http.routers.n8n-ui.middlewares=chain-authelia@file"
+
+      - "traefik.http.services.n8n-svc.loadbalancer.server.port=5678"

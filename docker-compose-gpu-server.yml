@@ -17,6 +17,8 @@ networks:
 
 ########################### SECRETS
 secrets:
+  mysql_root_password:
+    file: $DOCKERDIR/secrets/mysql_root_password
   basic_auth_credentials:
     file: $DOCKERDIR/secrets/basic_auth_credentials
   cf_dns_api_token:
@@ -43,8 +45,17 @@ include:
   - compose/$HOSTNAME/gluetun.yml
   - compose/$HOSTNAME/qbittorrent-vpn.yml
   - compose/$HOSTNAME/sabnzbd.yml
+  - compose/$HOSTNAME/mariadb.yml
+  - compose/$HOSTNAME/hashtopolis.yml
   - compose/$HOSTNAME/sonarr.yml
   - compose/$HOSTNAME/radarr.yml
+  - compose/$HOSTNAME/lazylibrarian.yml
+  - compose/$HOSTNAME/bookshelf.yml
+  - compose/$HOSTNAME/n8n.yml
+  #- compose/$HOSTNAME/hermes.yml
+  - compose/$HOSTNAME/ollama.yml
+  - compose/$HOSTNAME/open-webui.yml
+  - compose/$HOSTNAME/whisper-asr.yml
   - compose/$HOSTNAME/prowlarr.yml
   - compose/$HOSTNAME/notifiarr.yml
   - compose/$HOSTNAME/dozzle.yml
