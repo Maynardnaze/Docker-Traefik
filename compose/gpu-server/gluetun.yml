@@ -10,7 +10,7 @@ services:
     restart: unless-stopped
     profiles: ["core", "all"]
     networks:
-      - default
+     # - default
       - t3_proxy
     cap_add:
       - NET_ADMIN
@@ -34,6 +34,7 @@ services:
       VPN_ENDPOINT_IP: $GLUETUN_VPN_ENDPOINT_IP
       VPN_ENDPOINT_PORT: $GLUETUN_VPN_ENDPOINT_PORT
       DNS_ADDRESS: $GLUETUN_DNS_ADDRESS
+      FIREWALL_OUTBOUND_SUBNETS: 10.255.255.3/32
     labels:
       - "traefik.enable=true"
       # HTTP Routers

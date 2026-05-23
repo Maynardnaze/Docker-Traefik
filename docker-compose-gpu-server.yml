@@ -8,12 +8,15 @@ networks:
     ipam:
       config:
         - subnet: 192.168.91.0/24
+
   t3_proxy:
     name: t3_proxy
     driver: bridge
     ipam:
       config:
         - subnet: 192.168.90.0/24
+          ip_range: 192.168.90.128/25   # dynamic pool: .128 – .254
+          gateway: 192.168.90.1
 
 ########################### SECRETS
 secrets:
@@ -52,6 +55,7 @@ include:
   - compose/$HOSTNAME/lazylibrarian.yml
   - compose/$HOSTNAME/bookshelf.yml
   - compose/$HOSTNAME/n8n.yml
+  - compose/$HOSTNAME/graylog.yml
   #- compose/$HOSTNAME/hermes.yml
   - compose/$HOSTNAME/ollama.yml
   - compose/$HOSTNAME/open-webui.yml
@@ -64,4 +68,4 @@ include:
   - compose/$HOSTNAME/vscode.yml
   - compose/$HOSTNAME/jellyfin.yml
   - compose/$HOSTNAME/frigate.yml
-  - compose/$HOSTNAME/note-companion.yml
+  #- compose/$HOSTNAME/note-companion.yml
