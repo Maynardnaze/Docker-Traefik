@@ -1,0 +1,39 @@
+services:
+  hashtopolis-backend:
+    container_name: hashtopolis-backend
+    profiles: ["hash", "all"]
+    image: hashtopolis/backend:latest
+    restart: unless-stopped
+    # No Traefik labels — LAN access only via port 8083
+    # Agents connect to http://gpu-server-ip:8083/api/server.php
+    networks:
+      - t3_proxy
+    volumes:
+      - $USERSHARE/hashtopolis:/usr/local/share/hashtopolis
+      #- ./custom.ini:/usr/local/etc/php/conf.d/custom.ini   # optional
+    environment:
+      TZ: $TZ
+      PUID: 33
+      PGID: 33
+      HASHTOPOLIS_DB_USER: $MYSQL_USER
+      HASHTOPOLIS_DB_PASS: $MYSQL_PASSWORD
+      HASHTOPOLIS_DB_HOST: $MARIADB_HOST
+      HASHTOPOLIS_DB_DATABASE: $MYSQL_DATABASE
+      HASHTOPOLIS_ADMIN_USER: $HASHTOPOLIS_ADMIN_USER
+      HASHTOPOLIS_ADMIN_PASSWORD: $HASHTOPOLIS_ADMIN_PASSWORD
+      HASHTOPOLIS_APIV2_ENABLE: $HASHTOPOLIS_APIV2_ENABLE
+    depends_on:
+      - mariadb
+    ports:
+      - 8083:80
+
+    labels:
+      - "traefik.enable=true"
+      ## HTTP Routers
+      - "traefik.http.routers.hashtopolis-rtr.entrypoints=websecure-internal"
+      - "traefik.http.routers.hashtopolis-rtr.rule=Host(`hash.$DOMAINNAME_1`)"
+      ## Middlewares
+      - "traefik.http.routers.hashtopolis-rtr.middlewares=chain-authelia@file"
+      ## HTTP Services
+      - "traefik.http.routers.hashtopolis-rtr.service=hashtopolis-svc"
+      - "traefik.http.services.hashtopolis-svc.loadbalancer.server.port=80"

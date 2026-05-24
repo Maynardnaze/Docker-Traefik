@@ -1,0 +1,28 @@
+services:
+  open-webui:
+    image: ghcr.io/open-webui/open-webui:main
+    container_name: open-webui
+    security_opt:
+      - no-new-privileges:true
+    restart: unless-stopped
+    profiles: ["apps", "all"]
+    networks:
+      - t3_proxy
+    depends_on:
+      - ollama
+    #ports:
+    #  - "$OPENWEBUI_PORT:8080"
+    volumes:
+      - $DOCKERDIR/appdata/open-webui:/app/backend/data
+    environment:
+      - OLLAMA_BASE_URL=http://ollama:11434
+      - WEBUI_SECRET_KEY=$OPENWEBUI_SECRET_KEY
+      - WEBUI_AUTH=true
+      - TZ=$TZ
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.open-webui-rtr.rule=Host(`ai.$DOMAINNAME_1`)"
+      - "traefik.http.routers.open-webui-rtr.entrypoints=websecure-internal"
+      - "traefik.http.routers.open-webui-rtr.middlewares=chain-authelia@file"
+      - "traefik.http.routers.open-webui-rtr.service=open-webui-svc"
+      - "traefik.http.services.open-webui-svc.loadbalancer.server.port=8080"

@@ -1,0 +1,31 @@
+services:    
+  whisper:
+    image: onerahmet/openai-whisper-asr-webservice:latest-gpu
+    container_name: whisper
+    restart: unless-stopped
+    networks:
+      - t3_proxy
+    ports:
+      - "9000:9000"
+    volumes:
+      - $DOCKERDIR/appdata/whisper:/root/.cache
+    environment:
+      - TZ=$TZ
+      - ASR_ENGINE=faster_whisper
+      - ASR_MODEL=large-v3
+      - ASR_DEVICE=cuda
+    runtime: nvidia
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities: [gpu]
+ #   labels:
+ #     - "traefik.enable=true"
+ #     - "traefik.http.routers.whisper-rtr.entrypoints=websecure-internal"
+ #     - "traefik.http.routers.whisper-rtr.rule=Host(`whisper.$DOMAINNAME_1`)"
+ #     - "traefik.http.routers.whisper-rtr.middlewares=chain-no-auth@file"
+ #     - "traefik.http.routers.whisper-rtr.service=whisper-svc"
+ #     - "traefik.http.services.whisper-svc.loadbalancer.server.port=9000"

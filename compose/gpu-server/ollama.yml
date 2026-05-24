@@ -1,0 +1,33 @@
+services:
+  ollama:
+    image: ollama/ollama:latest
+    container_name: ollama
+    security_opt:
+      - no-new-privileges:true
+    restart: unless-stopped
+    profiles: ["apps", "all"]
+    networks:
+      - t3_proxy
+    ports:
+      - "$OLLAMA_PORT:11434"
+    volumes:
+      - /mnt/models:/mnt/models
+      - $DOCKERDIR/appdata/ollama:/root/.ollama
+    environment:
+      - OLLAMA_KEEP_ALIVE=24h
+      - OLLAMA_MODELS=/mnt/models
+      - TZ=$TZ
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: all
+              capabilities: [gpu]
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.ollama-rtr.rule=Host(`ollama.$DOMAINNAME_1`)"
+      - "traefik.http.routers.ollama-rtr.entrypoints=websecure-internal"
+      - "traefik.http.routers.ollama-rtr.middlewares=chain-authelia@file"
+      - "traefik.http.routers.ollama-rtr.service=ollama-svc"
+      - "traefik.http.services.ollama-svc.loadbalancer.server.port=11434"
