@@ -29,7 +29,7 @@ services:
               count: 1
               capabilities: [gpu]
     labels:
-      - "traefik.enable=true"
+      - "traefik.enable=false"
       - "traefik.http.routers.jellyfin-rtr.entrypoints=websecure-internal"
       - "traefik.http.routers.jellyfin-rtr.rule=Host(`jellyfin.$DOMAINNAME_1`)"
       - "traefik.http.routers.jellyfin-rtr.middlewares=chain-no-auth@file"
