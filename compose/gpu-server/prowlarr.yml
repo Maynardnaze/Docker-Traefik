@@ -21,7 +21,7 @@ services:
       PGID: $PGID
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.prowlarr-rtr.entrypoints=websecure-internal"
+      - "traefik.http.routers.prowlarr-rtr.entrypoints=websecure-internal,websecure-external"
       - "traefik.http.routers.prowlarr-rtr.rule=Host(`prowlarr.$DOMAINNAME_1`)"
       - "traefik.http.routers.prowlarr-rtr.middlewares=chain-authelia@file"
       - "traefik.http.routers.prowlarr-rtr.service=prowlarr-svc"

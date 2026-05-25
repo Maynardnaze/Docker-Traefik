@@ -27,14 +27,15 @@ services:
     labels:
       - "traefik.enable=true"
       # Webhook router — no auth
-      - "traefik.http.routers.n8n-webhook.rule=Host(`n8n.$DOMAINNAME_1`) && (PathPrefix(`/webhook-test`) || PathPrefix(`/webhook`))"
-      - "traefik.http.routers.n8n-webhook.entrypoints=websecure-internal"
+      - "traefik.http.routers.n8n-webhook.rule=Host(`n8n.$DOMAINNAME_1`) && (PathPrefix(`/webhook-test`) || PathPrefix(`/webhook || PathPrefix(`/webhook`))"
+      - "traefik.http.routers.n8n-webhook.entrypoints=websecure-internal,websecure-external"
       - "traefik.http.routers.n8n-webhook.priority=20"
+      - "traefik.http.routers.n8n-webhook.middlewares=chain-no-auth@file"
       - "traefik.http.routers.n8n-webhook.service=n8n-svc"
 
       # UI router — behind Authelia
-      - "traefik.http.routers.n8n-ui.rule=Host(`n8n.$DOMAINNAME_1`)"
-      - "traefik.http.routers.n8n-ui.entrypoints=websecure-internal"
+      - "traefik.http.routers.n8n-ui.rule=Host(`n8n-gui.$DOMAINNAME_1`)"
+      - "traefik.http.routers.n8n-ui.entrypoints=websecure-internal,websecure-external"
       - "traefik.http.routers.n8n-ui.priority=10"
       - "traefik.http.routers.n8n-ui.service=n8n-svc"
       - "traefik.http.routers.n8n-ui.middlewares=chain-authelia@file"

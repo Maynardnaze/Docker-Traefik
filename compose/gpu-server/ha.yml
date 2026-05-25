@@ -17,7 +17,7 @@ services:
     labels:
       - "traefik.enable=true"
       ## Router
-      - "traefik.http.routers.homeassistant-rtr.entrypoints=websecure-internal"
+      - "traefik.http.routers.homeassistant-rtr.entrypoints=websecure-internal,websecure-external"
       - "traefik.http.routers.homeassistant-rtr.rule=Host(`ha.$DOMAINNAME_1`)"
       - "traefik.http.routers.homeassistant-rtr.tls=true"
       - "traefik.http.routers.homeassistant-rtr.tls.certresolver=dns-cloudflare"  # or your resolver name

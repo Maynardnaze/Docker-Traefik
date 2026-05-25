@@ -22,7 +22,7 @@ services:
       PGID: $PGID
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.sonarr-rtr.entrypoints=websecure-internal"
+      - "traefik.http.routers.sonarr-rtr.entrypoints=websecure-internal,websecure-external"
       - "traefik.http.routers.sonarr-rtr.rule=Host(`sonarr.$DOMAINNAME_1`)"
       - "traefik.http.routers.sonarr-rtr.middlewares=chain-authelia@file"
       - "traefik.http.routers.sonarr-rtr.service=sonarr-svc"

@@ -1,0 +1,16 @@
+services:
+  # Cloudflare Tunnel - Secure tunnel to expose services without opening firewall ports
+  # Traffic flow: Internet → Cloudflare Edge → cloudflared → traefik:444 (websecure-external)
+  cloudflared:
+    container_name: cloudflared
+    image: cloudflare/cloudflared:latest
+    security_opt:
+      - no-new-privileges:true
+    restart: unless-stopped
+    profiles: ["core", "all"]
+    networks:
+      - t3_proxy
+    command: tunnel --no-autoupdate run
+    environment:
+      - TZ=$TZ
+      - TUNNEL_TOKEN=$CF_TUNNEL_TOKEN
