@@ -96,7 +96,7 @@ services:
     labels:
       - "traefik.enable=true"
       # HTTP Routers
-      - "traefik.http.routers.traefik-rtr.entrypoints=websecure-internal,websecure-external"
+      - "traefik.http.routers.traefik-rtr.entrypoints=websecure-internal"
       - "traefik.http.routers.traefik-rtr.rule=Host(`traefik.$DOMAINNAME_1`)"
       # Services - API
       - "traefik.http.routers.traefik-rtr.service=api@internal"

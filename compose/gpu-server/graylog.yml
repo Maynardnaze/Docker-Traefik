@@ -98,15 +98,19 @@ services:
       #- 12202:12202/tcp # GELF
       - 12201:12201/udp # GELF
     labels:
-  ##################################################################
-  # Base: let Traefik discover the Graylog container
-  ##################################################################
+
       - "traefik.enable=true"
-      # HTTP Routers
-      - "traefik.http.routers.graylog-rtr.entrypoints=websecure-internal"
-      - "traefik.http.routers.graylog-rtr.rule=Host(`graylog-gui.$DOMAINNAME_1`)"
-      # Middlewares
+      # --- Web UI router (humans → Authelia) ---
+      - "traefik.http.routers.graylog-rtr.entrypoints=websecure-internal,websecure-external"
+      - "traefik.http.routers.graylog-rtr.rule=Host(`graylog.$DOMAINNAME_1`)"
       - "traefik.http.routers.graylog-rtr.middlewares=chain-authelia@file"
-      # HTTP Services
+      - "traefik.http.routers.graylog-rtr.priority=100"
       - "traefik.http.routers.graylog-rtr.service=graylog-svc"
       - "traefik.http.services.graylog-svc.loadbalancer.server.port=9000"
+
+      # --- API router (/api → no auth, token-based) ---
+      - "traefik.http.routers.graylog-api-rtr.entrypoints=websecure-internal,websecure-external"
+      - "traefik.http.routers.graylog-api-rtr.rule=Host(`graylog.$DOMAINNAME_1`) && PathPrefix(`/api`)"
+      - "traefik.http.routers.graylog-api-rtr.middlewares=chain-no-auth@file"
+      - "traefik.http.routers.graylog-api-rtr.priority=200"
+      - "traefik.http.routers.graylog-api-rtr.service=graylog-svc"
