@@ -22,7 +22,7 @@ services:
       PGID: $PGID
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.radarr-rtr.entrypoints=websecure-internal"
+      - "traefik.http.routers.radarr-rtr.entrypoints=websecure-internal,websecure-external"
       - "traefik.http.routers.radarr-rtr.rule=Host(`radarr.$DOMAINNAME_1`)"
       - "traefik.http.routers.radarr-rtr.middlewares=chain-authelia@file"
       - "traefik.http.routers.radarr-rtr.service=radarr-svc"

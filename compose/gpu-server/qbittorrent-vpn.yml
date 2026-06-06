@@ -10,6 +10,7 @@ services:
     network_mode: "service:gluetun"
     volumes:
       - $DOCKERDIR/appdata/qbittorrent-vpn:/config
+      - $MEDIADIR1:/mnt/media
       - $DOWNLOADSDIR:/data/downloads # Ensure that downloads folder is set to /data/downloads in qBittorrent
     environment:
       TZ: $TZ

@@ -30,7 +30,7 @@ services:
     labels:
       - "traefik.enable=true"
       ## HTTP Routers
-      - "traefik.http.routers.hashtopolis-rtr.entrypoints=websecure-internal"
+      - "traefik.http.routers.hashtopolis-rtr.entrypoints=websecure-internal,websecure-external"
       - "traefik.http.routers.hashtopolis-rtr.rule=Host(`hash.$DOMAINNAME_1`)"
       ## Middlewares
       - "traefik.http.routers.hashtopolis-rtr.middlewares=chain-authelia@file"

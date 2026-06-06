@@ -32,7 +32,7 @@ services:
     labels:
       - "traefik.enable=true"
       # HTTP Routers
-      - "traefik.http.routers.vscode-rtr.entrypoints=websecure-internal"
+      - "traefik.http.routers.vscode-rtr.entrypoints=websecure-internal,websecure-external"
       - "traefik.http.routers.vscode-rtr.rule=Host(`code.$DOMAINNAME_1`)"
       # Middlewares
       - "traefik.http.routers.vscode-rtr.middlewares=chain-authelia@file"

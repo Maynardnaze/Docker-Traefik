@@ -56,9 +56,10 @@ include:
   - compose/$HOSTNAME/bookshelf.yml
   - compose/$HOSTNAME/n8n.yml
   - compose/$HOSTNAME/graylog.yml
-  #- compose/$HOSTNAME/hermes.yml
-  - compose/$HOSTNAME/ollama.yml
-  - compose/$HOSTNAME/open-webui.yml
+  - compose/$HOSTNAME/esphome.yml
+  - compose/$HOSTNAME/graylog.yml
+  #- compose/$HOSTNAME/ollama.yml
+  ##- compose/$HOSTNAME/open-webui.yml
   - compose/$HOSTNAME/whisper-asr.yml
   - compose/$HOSTNAME/prowlarr.yml
   - compose/$HOSTNAME/notifiarr.yml
@@ -68,4 +69,4 @@ include:
   - compose/$HOSTNAME/vscode.yml
   - compose/$HOSTNAME/jellyfin.yml
   - compose/$HOSTNAME/frigate.yml
-  #- compose/$HOSTNAME/note-companion.yml
+  - compose/$HOSTNAME/cloudflared.yml

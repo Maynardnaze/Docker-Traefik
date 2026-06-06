@@ -22,7 +22,7 @@ services:
       UMASK_SET: 002
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.sabnzbd-rtr.entrypoints=websecure-internal"
+      - "traefik.http.routers.sabnzbd-rtr.entrypoints=websecure-internal,websecure-external"
       - "traefik.http.routers.sabnzbd-rtr.rule=Host(`sabnzbd.$DOMAINNAME_1`)"
       - "traefik.http.routers.sabnzbd-rtr.middlewares=chain-authelia@file"
       - "traefik.http.routers.sabnzbd-rtr.service=sabnzbd-svc"
