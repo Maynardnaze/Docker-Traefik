@@ -1,0 +1,15 @@
+services:
+  esphome:
+    container_name: esphome
+    image: ghcr.io/esphome/esphome:latest
+    environment:
+      - ESPHOME_DASHBOARD_USE_PING=true
+      - TZ=$TZ
+    volumes:
+      - $DOCKERDIR/appdata/esphome:/config
+    ports:
+      - 6052:6052
+      - 6053:6053
+    restart: unless-stopped
+    profiles: ["core", "all"]
+    # + your traefik labels / network
