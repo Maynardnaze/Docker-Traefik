@@ -10,7 +10,8 @@ services:
     profiles: ["core", "all"]
     networks:
       - t3_proxy
-    command: tunnel --no-autoupdate run
-    environment:
-      - TZ=$TZ
-      - TUNNEL_TOKEN=$CF_TUNNEL_TOKEN
+    secrets:
+      - cloudflared_tunnel_token
+    volumes:
+      - $DOCKERDIR/appdata/cloudflared/run-from-secret.sh:/run-from-secret.sh:ro
+    command: /run-from-secret.sh

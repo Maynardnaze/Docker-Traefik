@@ -38,13 +38,20 @@ secrets:
     file: $DOCKERDIR/secrets/authelia_session_secret
   authelia_storage_encryption_key:
     file: $DOCKERDIR/secrets/authelia_storage_encryption_key
+  cloudflared_tunnel_token:
+    file: $DOCKERDIR/secrets/cloudflared_tunnel_token
+  telnyx_directory_webhook_secret:
+    file: $DOCKERDIR/secrets/telnyx_directory_webhook_secret
 ########################### SERVICES
 include:
   - compose/$HOSTNAME/socket-proxy.yml
   - compose/$HOSTNAME/mosquitto.yml
   - compose/$HOSTNAME/ha.yml
   - compose/$HOSTNAME/traefik.yml
+  - compose/$HOSTNAME/cloudflared.yml
   - compose/$HOSTNAME/authelia.yml
+  - compose/$HOSTNAME/telnyx-mall-directory.yml
+  - compose/$HOSTNAME/telnyx-webhook-server.yml
   - compose/$HOSTNAME/gluetun.yml
   - compose/$HOSTNAME/qbittorrent-vpn.yml
   - compose/$HOSTNAME/sabnzbd.yml
@@ -69,4 +76,3 @@ include:
   - compose/$HOSTNAME/vscode.yml
   - compose/$HOSTNAME/jellyfin.yml
   - compose/$HOSTNAME/frigate.yml
-  - compose/$HOSTNAME/cloudflared.yml

@@ -1,0 +1,29 @@
+services:
+  telnyx-webhook-server:
+    container_name: telnyx-webhook-server
+    build:
+      context: $DOCKERDIR/appdata/telnyx-webhook-server
+    restart: unless-stopped
+    profiles: ["core", "all"]
+    networks:
+      - t3_proxy
+    environment:
+      - TZ=$TZ
+      - WEBHOOK_SECRET_FILE=/run/secrets/telnyx_directory_webhook_secret
+      - DIRECTORY_WEBHOOK_SECRET_FILE=/run/secrets/telnyx_directory_webhook_secret
+      - WEBHOOK_JOBS_PATH=/data/jobs.json
+      - GUEST_SERVICES_PHONE=${TELNYX_DIRECTORY_GUEST_SERVICES_PHONE:-+124****0000}
+    secrets:
+      - telnyx_directory_webhook_secret
+    volumes:
+      - $DOCKERDIR/appdata/telnyx-webhook-server/data:/data
+    labels:
+      - "traefik.enable=true"
+      # Public Telnyx webhook route. Do not put this behind OAuth/Authelia/Access;
+      # Telnyx authenticates with x-webhook-secret or x-directory-secret.
+      - "traefik.http.routers.telnyx-webhook-rtr.rule=Host(`webhook.$DOMAINNAME_1`)"
+      - "traefik.http.routers.telnyx-webhook-rtr.entrypoints=websecure-external"
+      - "traefik.http.routers.telnyx-webhook-rtr.tls=true"
+      - "traefik.http.routers.telnyx-webhook-rtr.middlewares=chain-no-auth@file"
+      - "traefik.http.routers.telnyx-webhook-rtr.service=telnyx-webhook-svc"
+      - "traefik.http.services.telnyx-webhook-svc.loadbalancer.server.port=8787"
