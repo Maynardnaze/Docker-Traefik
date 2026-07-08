@@ -15,6 +15,7 @@ services:
       - "1883:1883"     # MQTT - needs to be reachable by Tasmota devices on LAN
       # - "8883:8883"   # MQTTS (TLS) - optional, enable later if needed
     networks:
-      - t3_proxy
+      t3_proxy:
+        ipv4_address: 192.168.90.20
     environment:
       - TZ=$TZ

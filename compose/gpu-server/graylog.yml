@@ -48,7 +48,7 @@ services:
       # Password: admin
       GRAYLOG_ROOT_PASSWORD_SHA2: "8c6976e5b5410415bde908bd4dee15dfb167a9c873fc4bb8a81f6f2ab448a918"
       GRAYLOG_HTTP_BIND_ADDRESS: "0.0.0.0:9000"
-      GRAYLOG_HTTP_EXTERNAL_URI: "https://graylog-gui.maynard.cloud/"
+      GRAYLOG_HTTP_EXTERNAL_URI: "https://graylog.maynard.cloud/"
       GRAYLOG_ELASTICSEARCH_HOSTS: "http://opensearch:9200"
       GRAYLOG_MONGODB_URI: "mongodb://mongodb:27017/graylog"
       GRAYLOG_TIMEZONE: "America/Detroit"
@@ -93,7 +93,7 @@ services:
       - 5555:5555/udp
       - 1514:1514/tcp   # Syslog
       - 1514:1514/udp   # Syslog
-      - 1515:1515/udp   # Syslog
+      - 1515:1515/tcp   # Syslog
       #- 12201:12201/tcp # GELF
       #- 12202:12202/tcp # GELF
       - 12201:12201/udp # GELF

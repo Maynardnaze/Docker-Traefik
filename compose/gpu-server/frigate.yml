@@ -1,7 +1,7 @@
 services:
   # Frigate - NVR with AI Detection
   frigate:
-    image: ghcr.io/blakeblackshear/frigate:stable
+    image: ghcr.io/blakeblackshear/frigate:stable-tensorrt
     container_name: frigate
     security_opt:
       - no-new-privileges:true
@@ -28,6 +28,9 @@ services:
     environment:
       TZ: $TZ
       FRIGATE_RTSP_PASSWORD: $FRIGATE_RTSP_PASSWORD
+      NVIDIA_VISIBLE_DEVICES: all
+      NVIDIA_DRIVER_CAPABILITIES: compute,utility,video
+      PLUS_API_KEY: 77e0ed7f-ff2f-4614-a818-db2e4d9cad1c:f36ef65b9ac80473485e5ed7a48dabdb519e5fb8
     runtime: nvidia
     deploy:
       resources:
