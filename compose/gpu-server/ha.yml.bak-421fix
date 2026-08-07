@@ -21,6 +21,8 @@ services:
       ## Router
       - "traefik.http.routers.homeassistant-rtr.entrypoints=websecure-internal,websecure-external"
       - "traefik.http.routers.homeassistant-rtr.rule=Host(`ha.$DOMAINNAME_1`)"
+      - "traefik.http.routers.homeassistant-rtr.tls=true"
+      - "traefik.http.routers.homeassistant-rtr.tls.certresolver=dns-cloudflare"  # or your resolver name
       ## Service — HA listens on 8123
       - "traefik.http.routers.homeassistant-rtr.service=homeassistant-svc"
       - "traefik.http.services.homeassistant-svc.loadbalancer.server.port=8123"
