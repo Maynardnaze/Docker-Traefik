@@ -15,8 +15,11 @@ networks:
     ipam:
       config:
         - subnet: 192.168.90.0/24
-          ip_range: 192.168.90.128/25   # dynamic pool: .128 – .254
+          ip_range: 192.168.90.128/25
           gateway: 192.168.90.1
+#          aux_addresses:
+#            traefik: 192.168.90.254   # dynamic pool: .128 – .254
+
 
 ########################### SECRETS
 secrets:
